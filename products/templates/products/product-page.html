@@ -1,0 +1,338 @@
+{% extends 'products/base2.html' %}
+
+{% block content %}
+	<!-- BREADCRUMB -->
+	<div id="breadcrumb">
+		<div class="container">
+			<ul class="breadcrumb">
+				<li><a href="/">Home</a></li>
+				<li><a href="{% url 'products:products-list' %}">Products</a></li>
+				<li><a href="#">{{ object.category }}</a></li>
+				<li class="active">{{ object.title }}</li>
+			</ul>
+		</div>
+	</div>
+	<!-- /BREADCRUMB -->
+
+
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!--  Product Details -->
+				<div class="product product-details clearfix">
+					<div class="col-md-6">
+						<div id="product-main-view">
+						{% for i in item.largeimage_set.all %}
+							<div class="product-view">
+								<img src="{{ i.large_image.url }}" alt="">
+							</div>
+						{% endfor %}
+						</div>
+						<div id="product-view">
+						{% for i in item.thumb_image_set.all %}
+							<div class="product-view">
+								<img src="{{ i.thumb_image.url }}" alt="">
+							</div>
+						{% endfor %}
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="product-body">
+							<div class="product-label">
+								<span>New</span>
+								{% if item.discount %}
+								<span class="sale">-{{ item.get_percentage_discount }}%</span>
+								{% endif %}
+							</div>
+							<h2 class="product-name">{{ object.title }}</h2>
+							{% if item.discount %}
+								<h3 class="product-price">${{ item.discount }} <del class="product-old-price">${{ item.price }}</del></h3>
+							{% else %}
+								<h3 class="product-price">${{ item.price }}</h3>
+							{% endif %}
+							<div>
+							    <div class="product-rating stars-rating" data-rating="{{item.get_avg_rating}}" data-num-stars="5" alt="rated {{item.get_avg_rating}}"></div>
+								<a data-toggle="tab" href="#tab2">{{ item.review_set.count }} Review(s) / Add Review</a>
+							</div>
+							
+							<p><strong>Availability:</strong> {{ item.get_avaliability_display }}</p>
+							{% if item.brand %}<p><strong>Brand:</strong> {{ item.brand }}</p>{% endif %}
+							<p>{{ object.description }}</p>
+							<div class="product-options">
+								{% comment %} <ul class="size-option">
+									<li><span class="text-uppercase">Size:</span></li>
+									<li class="active"><a href="#">S</a></li>
+									<li><a href="#">XL</a></li>
+									<li><a href="#">SL</a></li>
+								</ul>
+								<ul class="color-option">
+									<li><span class="text-uppercase">Color:</span></li>
+									<li class="active"><a href="#" style="background-color:#475984;"></a></li>
+									<li><a href="#" style="background-color:#8A2454;"></a></li>
+									<li><a href="#" style="background-color:#BF6989;"></a></li>
+									<li><a href="#" style="background-color:#9A54D8;"></a></li>
+								</ul> {% endcomment %}
+							</div>
+
+							<div class="product-btns">
+								{% comment %} <div class="qty-input">
+									<span class="text-uppercase">QTY: </span>
+									<input class="input" type="number">
+								</div> {% endcomment %}
+								<a class="primary-btn add-to-cart" href="{{ object.get_add_to_cart_url }}"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
+								<div class="pull-right">
+									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+									<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+									<button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="product-tab">
+							<ul class="tab-nav">
+								<li class="active"><a data-toggle="tab" href="#tab1">Details</a></li>
+								<li><a data-toggle="tab" href="#tab2">Reviews ({{ item.review_set.count }})</a></li>
+							</ul>
+							<div class="tab-content">
+								<div id="tab1" class="tab-pane fade in active">
+									<p>{{item.description}}</p>
+								</div>
+								<div id="tab2" class="tab-pane fade in">
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="product-reviews">
+											{% for review in reviews %}
+												<div class="single-review">
+													<div class="review-heading">
+														<div><a href="#"><i class="fa fa-user-o"></i> {{review.user_name}}</a></div>
+														<div><a href="#"><i class="fa fa-clock-o"></i> {{ review.created_at|date:'d M Y / H:i A' }}</a></div>
+														<div 
+														class="review-rating stars-rating pull-right" 
+														data-rating="{{review.rating}}" 
+														data-num-stars="5" 
+														alt="rated {{review.rating}}"
+														></div>
+													</div>
+													<div class="review-body">
+														<p>{{review.comment}}</p>
+													</div>
+												</div>
+											{% endfor %}
+
+												<ul class="reviews-pages">
+												{% if reviews.has_other_pages %}
+												{% if reviews.has_previous %}
+													<li><a href="?page={{reviews.previous_page_number}}"><i class="fa fa-caret-left"></i></a></li>
+												{% else %}
+													<li><i class="fa fa-caret-left"></i></li>
+												{% endif %}
+												{% for p in reviews.paginator.page_range %}
+													{% if reviews.number == p %}
+													<li class="active">{{p}}</li>
+													{% elif p > reviews.number|add:'-3' and p < reviews.number|add:'3' %}
+													<li><a href="?page={{p}}">{{p}}</a></li>
+													{% endif %}
+												{% endfor %}
+												{% if reviews.has_next %}
+													<li><a href="?page={{reviews.next_page_number}}"><i class="fa fa-caret-right"></i></a></li>
+												{% else %}
+													<li><i class="disabled fa fa-caret-right"></i></li>
+												{% endif %}
+												{% endif %}
+												</ul>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<h4 class="text-uppercase">Write Your Review</h4>
+											<p>Your email address will not be published.</p>
+											<form action="." method="POST" class="review-form">
+											{% csrf_token %}
+												<div class="form-group">
+													{{form.user_name}}
+													{% comment %} <input class="input" type="text" placeholder="Your Name" /> {% endcomment %}
+												</div>
+												<div class="form-group">
+													{{form.customer_email}}
+													{% comment %} <input class="input" type="email" placeholder="Email Address" /> {% endcomment %}
+												</div>
+												<div class="form-group">
+													{{form.comment}}
+													{% comment %} <textarea class="input" placeholder="Your review"></textarea> {% endcomment %}
+												</div>
+												<div class="form-group">
+													<div class="input-rating">
+														<strong class="text-uppercase">Rate this product: </strong>
+														<div class="stars">
+															<input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
+															<input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
+															<input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
+															<input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
+															<input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
+														</div>
+													</div>
+												</div>
+												<button class="primary-btn">Submit</button>
+											</form>
+										</div>
+									</div>
+
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /Product Details -->
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			{% comment %} <div class="row">
+				<!-- section title -->
+				<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">Picked For You</h2>
+					</div>
+				</div>
+				<!-- section title -->
+
+				<!-- Product Single -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="product product-single">
+						<div class="product-thumb">
+							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+							<img src="./img/product04.jpg" alt="">
+						</div>
+						<div class="product-body">
+							<h3 class="product-price">$32.50</h3>
+							<div class="product-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+							<div class="product-btns">
+								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Product Single -->
+
+				<!-- Product Single -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="product product-single">
+						<div class="product-thumb">
+							<div class="product-label">
+								<span>New</span>
+							</div>
+							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+							<img src="./img/product03.jpg" alt="">
+						</div>
+						<div class="product-body">
+							<h3 class="product-price">$32.50</h3>
+							<div class="product-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+							<div class="product-btns">
+								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Product Single -->
+
+				<!-- Product Single -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="product product-single">
+						<div class="product-thumb">
+							<div class="product-label">
+								<span class="sale">-20%</span>
+							</div>
+							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+							<img src="./img/product02.jpg" alt="">
+						</div>
+						<div class="product-body">
+							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+							<div class="product-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+							<div class="product-btns">
+								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Product Single -->
+
+				<!-- Product Single -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="product product-single">
+						<div class="product-thumb">
+							<div class="product-label">
+								<span>New</span>
+								<span class="sale">-20%</span>
+							</div>
+							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
+							<img src="./img/product01.jpg" alt="">
+						</div>
+						<div class="product-body">
+							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+							<div class="product-rating">
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star"></i>
+								<i class="fa fa-star-o empty"></i>
+							</div>
+							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
+							<div class="product-btns">
+								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /Product Single -->
+			</div> {% endcomment %}
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+{% endblock content %}

@@ -1,0 +1,25 @@
+
+{% block content %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <h4 class="modal-title">Confirm Sign Out</h4>
+        </div>
+        <form id="service_delete_confirm" method="POST" action="{% url 'account_logout' %}">
+            <div class="modal-body">
+                {% csrf_token %}
+                <p>Are you sure you want to sign out?</p>
+              {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+              {% endif %}
+            </div>
+
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-danger" value="Sign Out">
+                <a href="../../" type="button" class="btn btn-default">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

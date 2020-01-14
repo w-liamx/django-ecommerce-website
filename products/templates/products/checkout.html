@@ -1,0 +1,129 @@
+{% extends 'products/base2.html' %}
+
+{% block content %}
+
+{% comment %} <form>
+{% csrf_token %}
+{{form.as_p}}
+<button type="submit" class="btn btn-primary">checkout</button>
+</form> {% endcomment %}
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<form method="POST" id="checkout-form" class="clearfix">
+				{% csrf_token %}
+					<div class="col-md-6">
+						<div class="billing-details">
+							{% comment %} <p>Already a customer ? <a href="#">Login</a></p> {% endcomment %}
+							<div class="section-title">
+								<h3 class="title">Billing Details</h3>
+							</div>
+							<div class="form-group">
+								{{form.street_address}}
+								{% comment %} <input class="input" type="text" name="address" placeholder="Address"> {% endcomment %}
+							</div>
+							<div class="form-group">
+								{{form.apartment_address}}
+								{% comment %} <input class="input" type="text" name="city" placeholder="City"> {% endcomment %}
+							</div>
+							<div class="form-group">
+								{{form.country}}
+								{% comment %} <input class="input" type="text" name="country" placeholder="Country"> {% endcomment %}
+							</div>
+							<div class="form-group">
+								{{form.zip_code}}
+								{% comment %} <input class="input" type="text" name="zip-code" placeholder="ZIP Code"> {% endcomment %}
+							</div>
+							{% comment %} <div class="form-group">
+								<input class="input" type="tel" name="tel" placeholder="Telephone">
+							</div> {% endcomment %}
+							<div class="form-group">
+								<div class="input-checkbox">
+									<input {% if form.same_billing_address.value %}checked{% endif %} type="checkbox" name="same_billing_address" id="same-billing">
+									<label class="font-weak" for="same-billing">Shipping address is same as billing address?</label>
+									<div class="caption">
+										<p>Items will be shipped to your billing address.<p>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-checkbox">
+									<input {% if form.save_info.value %}checked{% endif %} type="checkbox" name="save_info" id="save-info">
+									<label class="font-weak" for="save-info">Save this information for next time?</label>
+									<div class="caption">
+										<p>Information will be saved for next time.<p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						{% comment %} <div class="shiping-methods">
+							<div class="section-title">
+								<h4 class="title">Shipping</h4>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="shipping" id="shipping-1" checked>
+								<label for="shipping-1">Free Shiping -  $0.00</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="shipping" id="shipping-2">
+								<label for="shipping-2">Standard - $4.00</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+						</div> {% endcomment %}
+
+						<div class="payments-methods">
+							<div class="section-title">
+								<h4 class="title">Payments Methods</h4>
+							</div>
+							{% comment %} <div class="input-checkbox">
+								<input type="radio" name="payments" id="payments-1" checked>
+								<label for="payments-1">Direct Bank Transfer</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="payments" id="payments-2">
+								<label for="payments-2">Cheque Payment</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+										<p>
+								</div>
+							</div> {% endcomment %}
+							{% for value, name in form.fields.payment_option.choices %}
+							<div class="input-checkbox">
+								<input type="radio" value="{{ value }}" name="payment_option" id="{{name}}">
+								<label for="{{name}}">{{ name }}</label>
+								<div class="caption">
+									<p><p>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="pull-right">
+						<button type="submit" class="primary-btn">Proceed</button>
+					</div>
+				</form>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
+{% endblock content %}

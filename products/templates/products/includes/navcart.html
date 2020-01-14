@@ -1,0 +1,27 @@
+<div class="custom-menu">
+    <div id="shopping-cart">
+        <div class="shopping-cart-list">
+        {% for order_item in object.items.all%}
+            <div class="product product-widget">
+                <div class="product-thumb">
+                    <img src="./img/thumb-product01.jpg" alt="">
+                </div>
+                <div class="product-body">
+                {% if order_item.item.discount %}
+                    <h3 class="product-price">${{ order_item.item.discount }} <span class="qty">x {{ order_item.quantity }}</span></h3>
+                    <h2 class="product-name"><a href="#">{{order_item.item.title}}</a></h2>
+                {% else %}
+                    <h3 class="product-price">${{ order_item.item.price }} <span class="qty">x {{ order_item.quantity }}</span></h3>
+                    <h2 class="product-name"><a href="#">{{order_item.item.title}}</a></h2>
+                {% endif %}
+                </div>
+                <button class="cancel-btn"><i class="fa fa-trash"></i></button>
+            </div>
+        {% endfor %}
+        </div>
+        <div class="shopping-cart-btns">
+            <a href={% url 'products:order-summary'%} class="main-btn">View Cart</a>
+            <button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+        </div>
+    </div>
+</div>

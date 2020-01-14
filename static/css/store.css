@@ -1,0 +1,42 @@
+.pagination-sm li.active {
+  background-color: #f8694a;
+  border-radius: 20px;
+}
+
+.pagination-sm li.page-item:hover {
+  background-color: #f86a4a62;
+  border-radius: 20px;
+  color: #000 !important;
+}
+
+a#page-link:hover {
+  background-color: #f86a4a62;
+  border-radius: 20px;
+  color: #000 !important;
+}
+
+li.active-page {
+  background-color: #f86a4a88;
+  color: #000 !important;
+}
+
+a#page-link:focus {
+  background-color: #f86a4a62;
+  border-radius: 20px;
+  color: #000 !important;
+}
+.input-group-btn-store {
+  height: 40px !important;
+}
+
+.coupon-row {
+  background-color: rgba(119, 119, 119, 0.336);
+}
+
+.coupon-amount {
+  color: rgba(62, 168, 36, 0.884);
+}
+
+.mr-2 {
+  margin-right: 3px;
+}
