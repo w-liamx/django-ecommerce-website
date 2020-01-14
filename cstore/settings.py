@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     
     'widget_tweaks',
     'django_countries',
-    'storages'
+    'storages',
 
     'django.contrib.sites',
 
@@ -141,8 +141,7 @@ USE_TZ = True
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "media_cdn"),
+    os.path.join(BASE_DIR, "static")
 ]
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
