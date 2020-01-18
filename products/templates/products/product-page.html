@@ -5,7 +5,7 @@
 	<div id="breadcrumb">
 		<div class="container">
 			<ul class="breadcrumb">
-				<li><a href="/">Home</a></li>
+				<li><a href="{% url 'products:index' %}">Home</a></li>
 				<li><a href="{% url 'products:products-list' %}">Products</a></li>
 				<li><a href="#">{{ object.category }}</a></li>
 				<li class="active">{{ object.title }}</li>
@@ -155,15 +155,12 @@
 											{% csrf_token %}
 												<div class="form-group">
 													{{form.user_name}}
-													{% comment %} <input class="input" type="text" placeholder="Your Name" /> {% endcomment %}
 												</div>
 												<div class="form-group">
 													{{form.customer_email}}
-													{% comment %} <input class="input" type="email" placeholder="Email Address" /> {% endcomment %}
 												</div>
 												<div class="form-group">
 													{{form.comment}}
-													{% comment %} <textarea class="input" placeholder="Your review"></textarea> {% endcomment %}
 												</div>
 												<div class="form-group">
 													<div class="input-rating">
@@ -217,7 +214,7 @@
 					<div class="product product-single">
 						<div class="product-thumb">
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="./img/product04.jpg" alt="">
+							<img src="{% static 'img/product04.jpg' %}" alt="">
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50</h3>
@@ -247,7 +244,7 @@
 								<span>New</span>
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="./img/product03.jpg" alt="">
+							<img src="{% static 'img/product03.jpg' %}" alt="">
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50</h3>
@@ -277,7 +274,7 @@
 								<span class="sale">-20%</span>
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="./img/product02.jpg" alt="">
+							<img src="{% static 'img/product02.jpg' %}" alt="">
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
@@ -308,7 +305,7 @@
 								<span class="sale">-20%</span>
 							</div>
 							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="./img/product01.jpg" alt="">
+							<img src="{% static 'img/product01.jpg' %}" alt="">
 						</div>
 						<div class="product-body">
 							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>

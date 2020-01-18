@@ -101,12 +101,6 @@
 {% endblock extra_css %}
 
 {% block content %}
-
-{% comment %} <form>
-{% csrf_token %}
-{{form.as_p}}
-<button type="submit" class="btn btn-primary">checkout</button>
-</form> {% endcomment %}
 	<!-- section -->
 	<div class="section">
 		<!-- container -->
@@ -170,7 +164,7 @@
                       {% if order.coupon.code %}
                      <div class="product product-widget">
                         <div class="product-thumb">
-                          <img src="/static/img/BANNY.png" alt="" />
+                          <img src="{% static 'img/BANNY.png' %}" alt="" />
                         </div>
                         <div class="product-body">
                         <div>

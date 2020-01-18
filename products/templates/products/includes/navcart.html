@@ -4,7 +4,7 @@
         {% for order_item in object.items.all%}
             <div class="product product-widget">
                 <div class="product-thumb">
-                    <img src="./img/thumb-product01.jpg" alt="">
+                    <img src="{% static 'img/thumb-product01.jpg' %}" alt="">
                 </div>
                 <div class="product-body">
                 {% if order_item.item.discount %}
@@ -20,8 +20,8 @@
         {% endfor %}
         </div>
         <div class="shopping-cart-btns">
-            <a href={% url 'products:order-summary'%} class="main-btn">View Cart</a>
-            <button class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></button>
+            <a href={% url 'products:order-summary' %} class="main-btn">View Cart</a>
+            <a href={% url 'products:Checkout' %} class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
 </div>

@@ -78,7 +78,7 @@
             {% endfor %}
             {% if object.coupon.code %}
             <tr class="coupon-row">
-              <td class="thumb"><img src="/static/img/BANNY.png" alt="" /></td>
+              <td class="thumb"><img src="{% static 'img/BANNY.png'%}" alt="" /></td>
               <td class="total" colspan="3">
                 <strong>{{ object.coupon.code }}</strong>
                 <ul>
@@ -88,7 +88,11 @@
               <td class="total text-center">
                 <strong class="coupon-amount">-${{ object.coupon.amount }}</strong>
               </td>
-              <td></td>
+              <td class="text-right">
+                <a href="{% url 'products:remove-coupon' %}" class="main-btn icon-btn">
+                  <i class="fa fa-close"></i>
+                </a>
+              </td>
             </tr>
             {% endif %}
           </tbody>
@@ -101,7 +105,7 @@
             </tr>
             <tr>
               <th class="empty" colspan="3"></th>
-              <th>SHIPING</th>
+              <th>SHIPPING</th>
               <td colspan="2">Free Shipping</td>
             </tr>
             <tr>
@@ -116,7 +120,6 @@
                 {% csrf_token %}
                 <div class="input-group">
                   {{couponform.code}}
-                  {% comment %} <input type="text" class="input" style="background-color:#fff" placeholder="Coupon code" aria-label="Coupon code" aria-describedby="button-addon1" > {% endcomment %}
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-success input-group-btn-store" id="button-addon1">Redeem</button>
                   </div>

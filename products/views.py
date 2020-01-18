@@ -259,6 +259,9 @@ def remove_from_cart(request, slug):
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False)[0]
             order.items.remove(order_item)
+            if order.coupon:
+                order.coupon.remove(coupon)
+            order_item.delete()
             messages.info(request, "Item removed from cart")
 
             return redirect("products:order-summary")
@@ -270,6 +273,16 @@ def remove_from_cart(request, slug):
         messages.info(request, "You do not have an active order")
 
         return redirect("products:single-product", slug=slug)
+
+def remove_coupon(request):
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.coupon:
+            order.coupon = None
+            order.save()
+            messages.info(request, "Coupon Removed")
+            return redirect("products:order-summary")
 
 @login_required
 def remove_single_item_from_cart(request, slug):
@@ -283,6 +296,10 @@ def remove_single_item_from_cart(request, slug):
                 order_item.quantity -= 1
             else:
                 order.items.remove(order_item)
+            if order.coupon:
+                order.coupon = None
+                order.save()
+                order_item.delete()
             order_item.save()
             messages.info(request, "Quantity updated")
             return redirect("products:order-summary")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,8 +13,6 @@
     <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="{% static 'vendors/nprogress/nprogress.css' %}" rel="stylesheet">
     <!-- Animate.css -->
     <link href="{% static 'vendors/animate.css/animate.min.css' %}" rel="stylesheet">
 
@@ -22,7 +20,6 @@
     <link href="{% static 'build/css/custom.min.css' %}" rel="stylesheet">
           <!-- Theme style  -->
 	<link rel="stylesheet" href="{% static 'css/style.css' %}">
-    {% comment %} <link rel="stylesheet" href="{% static 'css/mine.css' %}"> {% endcomment %}
   </head>
   <body class="login">
   {% block extra_head %}
