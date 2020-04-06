@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = (os.environ.get('DEBUG_VALUE') == 'False')
 # DEBUG = True
 
-ALLOWED_HOSTS = ['bannystores.herokuapp.com']
+ALLOWED_HOSTS = ['bannystores.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages', 'django.contrib.staticfiles', 'products',
     'stats', 'search', 'widget_tweaks', 'django_countries', 'storages',
     'django.contrib.sites', 'allauth', 'allauth.account',
-    'allauth.socialaccount', 'django_registration', 'ravepay', 'django_filters'
+    'allauth.socialaccount', 'django_registration', 'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -89,18 +89,10 @@ DATABASES = {
         'NAME': 'cstore',
         'USER': 'root',
         'PASSWORD'
-        'williams10'
         'HOST': 'localhost:8080',
         'PORT': ''
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -204,48 +196,3 @@ STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
 
 RAVEPAY_PUBLIC_KEY = os.environ.get('RAVEPAY_PUBLIC_KEY')
 RAVEPAY_SECRET_KEY = os.environ.get('RAVEPAY_SECRET_KEY')
-
-from django.contrib.staticfiles.storage import ManifestStaticFilesStorage
-from django.utils.six.moves.urllib.parse import (
-    unquote,
-    urlsplit,
-    urlunsplit,
-)
-
-
-class DjsManifestStaticFilesStorage(ManifestStaticFilesStorage):
-    manifest_strict = False
-
-    def hashed_name(self, name, content=None, filename=None):
-        # `filename` is the name of file to hash if `content` isn't given.
-        # `name` is the base name to construct the new hashed filename from.
-        parsed_name = urlsplit(unquote(name))
-        clean_name = parsed_name.path.strip()
-        if filename:
-            filename = urlsplit(unquote(filename)).path.strip()
-        filename = filename or clean_name
-        opened = False
-        if content is None:
-            try:
-                content = self.open(filename)
-            except IOError:
-                # Handle directory paths and fragments
-                return name
-            opened = True
-        try:
-            file_hash = self.file_hash(clean_name, content)
-        finally:
-            if opened:
-                content.close()
-        path, filename = os.path.split(clean_name)
-        root, ext = os.path.splitext(filename)
-        if file_hash is not None:
-            file_hash = ".%s" % file_hash
-        hashed_name = os.path.join(path, "%s%s%s" % (root, file_hash, ext))
-        unparsed_name = list(parsed_name)
-        unparsed_name[2] = hashed_name
-        # Special casing for a @font-face hack, like url(myfont.eot?#iefix")
-        # http://www.fontspring.com/blog/the-new-bulletproof-font-face-syntax
-        if '?#' in name and not unparsed_name[3]:
-            unparsed_name[2] += '?'
-        return urlunsplit(unparsed_name)

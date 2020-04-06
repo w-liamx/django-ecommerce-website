@@ -22,12 +22,14 @@ from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('favicon.ico', RedirectView.as_view(url='static/favicon.ico', permanent=False)),
+    path('favicon.ico',
+         RedirectView.as_view(url='static/favicon.ico', permanent=False)),
     path('accounts/', include('allauth.urls')),
     path('', include('products.urls'), name='products'),
-    path('ravepay/', include('ravepay.urls'), name='ravepay'),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
