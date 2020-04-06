@@ -1,0 +1,30 @@
+    <!-- Product Single -->
+    <div class="product product-single">
+        <div class="product-thumb">
+            <div class="product-label">
+                <span>New</span>
+                <span class="sale">-{{ item.get_percentage_discount }}%</span>
+            </div>
+            {% if show_timer %}
+            <ul class="product-countdown">
+                <li><span>00 H</span></li>
+                <li><span>00 M</span></li>
+                <li><span>00 S</span></li>
+            </ul>
+            {% endif %}
+            <a class="main-btn quick-view" href="{{ item.get_absolute_url }}"><i class="fa fa-search-plus"></i> View</a>
+            <img src={{item.image.url}} width="270" height="360" alt="">
+        </div>
+        <div class="product-body">
+            <h3 class="product-price">${{ item.price }} <del class="product-old-price">${{ item.discount }}</del></h3>
+            <div class="product-rating stars-rating" data-rating="{{item.get_avg_rating}}" data-num-stars="5" alt="rated {{item.get_avg_rating}} of 5 stars"></div>
+            <h2 class="product-name"><a href="{{ item.get_absolute_url }}">{{ item.title }} </a>| <span class="font-weak"><a href="#">{{ item.category.name }}</a></span></h2> 
+            <span class="font-weak"><a href="#">{{ item.brand }}</a></span>
+            <div class="product-btns">
+                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+				<a href="{{ item.get_add_to_cart_url }}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
+            </div>
+        </div>
+    </div>
+    <!-- /Product Single -->

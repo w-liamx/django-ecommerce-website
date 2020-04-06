@@ -1,0 +1,9 @@
+<!-- Search -->
+<div class="header-search">
+    <form action="{% url 'products:products-list' %}" method="GET">
+    {{object_list.form.query}}
+    {{object_list.form.category}}
+        <button class="search-btn"><i class="fa fa-search"></i></button>
+    </form>
+</div>
+<!-- /Search -->

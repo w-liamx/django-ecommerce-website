@@ -1,0 +1,53 @@
+{% load static %}
+
+<div class="col-md-4 col-sm-12 col-xs-12">
+						<div class="billing-details">
+							<div class="section-title">
+								<h4 class="title">Cart review</h4>
+                            </div>
+                            <div id="shopping-cart">
+                                <div class="shopping-cart-list">
+                                {% for order_item in order.items.items.all %}
+                                    <div class="product product-widget">
+                                        <div class="product-thumb">
+                                            <img src="{{ order_item.item.image.url }}" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                        {% if order_item.item.discount %}
+                                            <div>
+                                            <h3 class="product-price">${{ order_item.item.discount }} <span class="qty">x {{ order_item.quantity }}</span></h3>
+                                            <h3 class="product-name pull-right inline" style="padding-right:3px">${{ order_item.get_total_order_item_discount_price }} </h3>
+                                            </div>
+                                            <h2 class="product-name">{{order_item.item.title}}</h2>
+                                        {% else %}
+                                            <div>
+                                            <h3 class="product-price">${{ order_item.item.price }} <span class="qty">x {{ order_item.quantity }}</span></h3>
+                                            <h3 class="product-name pull-right inline" style="padding-right:3px">${{ order_item.get_total_order_item_price }} </h3>
+                                            </div>
+                                            <h2 class="product-name">{{order_item.item.title}}</h2>
+                                        {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                {% if order.coupon.code %}
+                                <div class="product product-widget">
+                                    <div class="product-thumb">
+                                    <img src="{% static 'img/BANNY.png' %}" alt="" />
+                                    </div>
+                                    <div class="product-body">
+                                    <div>
+                                    <h3 class="product-price">{{ order.coupon.code }}</h3> 
+                                    <h3 class="coupon-amount product-name pull-right inline" style="padding-right:3px">-${{ order.coupon.amount }}</h3>
+                                    </div>
+                                    <h2 class="product-name">{{order.coupon.code}}</h2>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                </div>
+                                <hr>
+                                <div class="pull-right" style="padding-right:15px">
+                                    <h2>Total: </h2><h3 class="product-price inline">{{ order.items.get_total }}</h3>
+                                </div>
+                            </div>
+						</div>
+					</div>

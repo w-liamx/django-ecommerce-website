@@ -1,0 +1,131 @@
+{% load static %}
+{% load cart_template_tags %}
+{% load home_tags %}
+<!-- HEADER -->
+	<header>
+		<!-- top Header -->
+		<div id="top-header">
+			<div class="container">
+				<div class="pull-right">
+					<ul class="header-top-links">
+						<li><a href="{% url 'products:products-list'%}">Store</a></li>
+						<li><a href="#">Newsletter</a></li>
+						<li><a href="#">FAQ</a></li>
+						<li class="dropdown default-dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">ENG <i class="fa fa-caret-down"></i></a>
+							<ul class="custom-menu">
+								<li><a href="#">English (ENG)</a></li>
+								<li><a href="#">Russian (Ru)</a></li>
+								<li><a href="#">French (FR)</a></li>
+								<li><a href="#">Spanish (Es)</a></li>
+							</ul>
+						</li>
+						<li class="dropdown default-dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">USD <i class="fa fa-caret-down"></i></a>
+							<ul class="custom-menu">
+								<li><a href="#">USD ($)</a></li>
+								<li><a href="#">NG (#)</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /top Header -->
+		{% include "products/includes/messages.html" %}
+		<!-- header -->
+		<div id="header">
+			<div class="container">
+				<div class="pull-left">
+					<!-- Logo -->
+					<div class="header-logo">
+						<a class="logo" href="{% url 'products:index' %}">
+							<img src="{% static 'img/banny.png'%}" alt="">
+						</a>
+					</div>
+					<!-- /Logo -->
+					{% search_form request %}
+				</div>
+				<div class="pull-right">
+					<ul class="header-btns">
+                    {% if request.user.is_authenticated %}
+						<!-- Account -->
+						<li class="header-account dropdown default-dropdown">
+							<div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+								<div class="header-btns-icon">
+									<i class="fa fa-user-o"></i>
+								</div>
+								<strong class="text-uppercase">My Account <i class="fa fa-caret-down"></i></strong>
+								<br>
+								<span class="primary-color">{{ request.user.username }}</span>
+							</div>
+							
+							<ul class="custom-menu">
+								<li><a href="#"><i class="fa fa-user-o"></i> My Profile</a></li>
+								<li><a href="#"><i class="fa fa-heart-o"></i> My Wishlist</a></li>
+								<li><a href="#"><i class="fa fa-exchange"></i> Compare</a></li>
+								{% comment %} <li><a href="#"><i class="fa fa-check"></i> Checkout</a></li> {% endcomment %}
+								<li><a href="{% url 'account_logout' %}"><i class="fa fa-unlock-alt"></i> Logout</a></li>
+							
+							</ul>
+						</li>
+						<!-- /Account -->
+
+						<!-- Cart -->
+						<li class="header-cart dropdown default-dropdown">
+							{% comment %} <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"> {% endcomment %}
+							<a href="{% url 'products:cart-summary'%}">
+								<div class="header-btns-icon">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="qty">{{ request.user|cart_item_count }}</span>
+								</div>
+								{% comment %}<span class="primary-color">${{ request.user|cart_total }}</span>
+								 <br>
+								<strong class="text-uppercase">Cart :</strong> {% endcomment %}
+								
+							</a>
+							
+						</li>
+						<!-- /Cart -->
+                        {% else %}
+                        {% comment %} <li class="header-account" >
+                                <div class="header-btns-icon">
+									<i class="fa fa-sign-in"></i>
+                                </div>
+                                <a href= "{% url 'account_login' %}" class="text-uppercase">Login</a>
+                        </li>
+                        <li class="header-account" >
+                            <a href="{% url 'account_signup' %}" class="text-uppercase">Sign Up</a>
+                            <div class="header-btns-icon">
+                                <i class="fa fa-user-plus"></i>
+                            </div>
+                        </li> {% endcomment %}
+						<!-- Cart -->
+						<li class="header-cart dropdown default-dropdown">
+							{% comment %} <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"> {% endcomment %}
+							<a href="{% url 'products:cart-summary'%}">
+								<div class="header-btns-icon">
+									<i class="fa fa-shopping-cart"></i>
+									<span class="qty">{{ request.session|anonymous_cart_item_count }}</span>
+								</div>
+								{% comment %}<span class="primary-color">${{ request.session|anonymous_cart_total }}</span>
+								 <br>
+								<strong class="text-uppercase">Cart</strong>							 {% endcomment %}
+							</a>
+							
+						</li>
+						<!-- /Cart -->
+                        {% endif %}
+						<!-- Mobile nav toggle-->
+						<li class="nav-toggle pull-right">
+							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
+						</li>
+						<!-- / Mobile nav toggle -->
+					</ul>
+				</div>
+			</div>
+			<!-- header -->
+		</div>
+		<!-- container -->
+	</header>
+	<!-- /HEADER -->

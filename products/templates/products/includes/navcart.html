@@ -20,8 +20,8 @@
         {% endfor %}
         </div>
         <div class="shopping-cart-btns">
-            <a href={% url 'products:order-summary' %} class="main-btn">View Cart</a>
-            <a href={% url 'products:Checkout' %} class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="{% url 'products:order-summary' %}" class="main-btn">View Cart</a>
+            <a href="{% url 'products:Checkout' %}" class="primary-btn">Checkout <i class="fa fa-arrow-circle-right"></i></a>
         </div>
     </div>
 </div>

@@ -13,41 +13,98 @@
 						<div class="billing-details">
 							{% comment %} <p>Already a customer ? <a href="#">Login</a></p> {% endcomment %}
 							<div class="section-title">
-								<h3 class="title">Billing Details</h3>
+								<h3 class="title">billing Details</h3>
 							</div>
-							<div class="form-group">
-								{{form.street_address}}
+							<div class="billing_form">
+								<div class="form-group">
+									<input class="input" type="text" name="billing_street_address" id="billing_street_address" placeholder="Address">
+								</div>
+								<div class="form-group">
+									<input class="input" type="text" name="billing_apartment_address" id="billing_apartment_address" placeholder="Apartment">
+								</div>
+								<div class="form-group">
+									{{form.billing_country}}
+								</div>
+								<div class="form-group">
+									<input class="input" type="text" name="billing_zip_code" id="billing_zip_code" placeholder="ZIP Code">
+								</div>
+								{% comment %} <div class="form-group">
+									<input class="input" type="tel" name="tel" placeholder="Telephone">
+								</div> {% endcomment %}
+								<div class="form-group">
+									<div class="input-checkbox">
+										<input type="checkbox" name="set_default_billing" id="set_default_billing">
+										<label class="font-weak" for="set_default_billing">Save as default billing address?</label>
+										<div class="caption">
+											<span>Information will be saved as your default billing address<span>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="form-group">
-								{{form.apartment_address}}
-							</div>
-							<div class="form-group">
-								{{form.country}}
-							</div>
-							<div class="form-group">
-								{{form.zip_code}}
-							</div>
-							{% comment %} <div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
-							</div> {% endcomment %}
+							{% if default_billing_address %}
 							<div class="form-group">
 								<div class="input-checkbox">
-									<input {% if form.same_billing_address.value %}checked{% endif %} type="checkbox" name="same_billing_address" id="same-billing">
-									<label class="font-weak" for="same-billing">Shipping address is same as billing address?</label>
+									<input type="checkbox" name="use_default_billing" id="use_default_billing">
+									<label class="font-weak" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:20 }}</label>
+									<div class="caption">
+										<p>The Bill of this order will be sent to {{ default_billing_address.street_address }}<p>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							<div class="form-group same-billing">
+								<div class="input-checkbox">
+									<input type="checkbox" name="same_billing_address" id="same_billing_address">
+									<label class="font-weak" for="same_billing_address">Billing address is same as Shipping address?</label>
 									<div class="caption">
 										<p>Items will be shipped to your billing address.<p>
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
-								<div class="input-checkbox">
-									<input {% if form.save_info.value %}checked{% endif %} type="checkbox" name="save_info" id="save-info">
-									<label class="font-weak" for="save-info">Save this information for next time?</label>
-									<div class="caption">
-										<p>Information will be saved for next time.<p>
+						</div>
+						<hr>
+						<div class="billing-details shipping_details">
+							{% comment %} <p>Already a customer ? <a href="#">Login</a></p> {% endcomment %}
+							<div class="section-title">
+								<h3 class="title">Shipping Details</h3>
+							</div>
+							<div class="shipping_form">
+								<div class="form-group">
+									<input class="input" type="text" name="shipping_street_address" id="shipping_street_address" placeholder="Address">
+								</div>
+								<div class="form-group">
+									<input class="input" type="text" name="shipping_apartment_address" id="shipping_apartment_address" placeholder="Apartment">
+								</div>
+								<div class="form-group">
+									{{form.shipping_country}}
+								</div>
+								<div class="form-group">
+									<input class="input" type="text" name="shipping_zip_code" id="shipping_zip_code" placeholder="ZIP Code">
+								</div>
+								{% comment %} <div class="form-group">
+									<input class="input" type="tel" name="tel" placeholder="Telephone">
+								</div> {% endcomment %}
+								<div class="form-group">
+									<div class="input-checkbox">
+										<input type="checkbox" name="set_default_shipping" id="set_default_shipping">
+										<label class="font-weak" for="set_default_shipping">Set as default shipping address?</label>
+										<div class="caption">
+											<p>Information will be saved as your default shipping address<p>
+										</div>
 									</div>
 								</div>
 							</div>
+							{% if default_shipping_address %}
+							<div class="form-group default-shipping">
+								<div class="input-checkbox">
+									<input type="checkbox" name="use_default_shipping" id="use_default_shipping">
+									<label class="font-weak" for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address|truncatechars:20 }}</label>
+									<div class="caption">
+										<p>Order will be shipped to {{ default_shipping_address.street_address }}<p>
+									</div>
+								</div>
+							</div>
+							{% endif %}
 						</div>
 					</div>
 

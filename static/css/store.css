@@ -40,3 +40,134 @@ a#page-link:focus {
 .mr-2 {
   margin-right: 3px;
 }
+
+.product-options > ul {
+  margin-bottom: 15px;
+}
+
+.search-result-img {
+  vertical-align: top;
+  text-align: left;
+  padding-right: 10px !important;
+  margin-right: 10px;
+  width: 150px;
+  height: 150px;
+}
+
+.store-row-height {
+  height: 10px !important;
+}
+
+.list-links > label {
+  appearance: none;
+  position: relative;
+  font-weight: normal;
+  display: block;
+  padding: 2px 0px;
+  text-transform: uppercase;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.list-links > label > input {
+  padding: 0px;
+  margin: 0px;
+}
+
+.list-links > label:before {
+  content: "\f105";
+  position: absolute;
+  left: 0px;
+  font-family: FontAwesome;
+  -webkit-transform: translateX(-10px);
+  -ms-transform: translateX(-10px);
+  transform: translateX(-10px);
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.list-links > label:hover,
+.list-links > label:focus,
+.list-links > label.active {
+  color: #f8694a;
+  -webkit-transform: translateX(10px);
+  -ms-transform: translateX(10px);
+  transform: translateX(10px);
+}
+
+.list-links > label:hover:before,
+.list-links > label:focus:before,
+.list-links > label.active:before {
+  opacity: 1;
+  visibility: visible;
+}
+
+label {
+  display: inline;
+  cursor: pointer;
+}
+
+.filter-option {
+  display: none;
+}
+
+.filter-option {
+  background-color: #fafafa;
+  border: 1px solid #cacece;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 9px;
+  border-radius: 3px;
+  display: inline-block;
+  position: relative;
+}
+
+.filter-option:active,
+label:active + .filter-option:checked {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+label + .filter-option:checked {
+  background-color: #e9ecee;
+  border: 1px solid #adb8c0;
+  box-shadow: 0 1px 2px #f8694a, inset 0px -15px 10px -12px #f8694a,
+    inset 15px 10px -12px #f8694a;
+  color: #99a1a7;
+}
+
+label:after + .filter-option:checked {
+  content: "\2714";
+  font-size: 14px;
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  color: #99a1a7;
+}
+
+div#store-price-slider {
+  padding-bottom: 0px;
+  margin-bottom: 20px;
+}
+
+div.wrap {
+  text-align: center;
+}
+
+div.price_min_max {
+  padding-bottom: 15px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+div > .price_filter_min {
+  display: inline-block;
+  width: 100px;
+}
+
+div > .price_filter_max {
+  display: inline-block;
+  width: 100px;
+}

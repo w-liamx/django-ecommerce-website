@@ -1,0 +1,79 @@
+	{% load static %}
+    <!-- jQuery Plugins -->
+	<script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/slick.min.js' %}"></script>
+	<script src="{% static 'js/nouislider.min.js' %}"></script>
+	<script src="{% static 'js/jquery.zoom.min.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+	{% block extra_js %}{% endblock extra_js%}
+	<script>
+		$('.button').on('click', function(event){
+			var type = $(this).data('type');
+			var status = $(this).data('status');
+			
+			$('.button').removeClass('is-active');
+			$(this).addClass('is-active');
+			
+			$('.notify')
+				.removeClass()
+				.attr('data-notification-status', status)
+				.addClass(type + ' notify')
+				.addClass('do-show'); 
+			
+			event.preventDefault();
+		})
+		$(".stars-rating").each(function(){
+			const rating = $(this).data("rating");
+			const numStars = $(this).data("numStars");
+			const fullStar = '<i class="fa fa-star mr-2"></i>'.repeat(Math.floor(rating));
+			const halfStar = (rating%1 !== 0) ? '<i class="fa fa-star-half-o mr-2"></i>': '';
+			const noStar = '<i class="fa fa-star-o empty mr-2"></i>'.repeat(Math.floor(numStars - rating));
+			$(this).html(`${fullStar}${halfStar}${noStar}`);
+		})
+
+		$('.filter-option').click(function(){	
+			$('#filter-form').submit()		
+		})
+
+		var billing_form  = $('.billing_form')
+		var shipping_form = $('.shipping_form')
+		var default_shipping = $('.default-shipping')
+		var same_billing = $('.same-billing')
+		var shipping_details = $('.shipping_details')
+
+		var use_default_billing = document.querySelector('input[name=use_default_billing]')
+		var use_default_shipping = document.querySelector('input[name=use_default_shipping]')
+		var same_billing_address = document.querySelector('input[name=same_billing_address]')
+		var set_default_billing = document.querySelector('input[name=set_default_billing]')
+
+		use_default_billing.addEventListener('change', function(){
+			if (this.checked){
+				billing_form.hide();
+			} else {
+				billing_form.show();
+			}
+		})
+		use_default_shipping.addEventListener('change', function(){
+			if (this.checked){
+				shipping_form.hide();
+				same_billing.hide();
+			} else {
+				shipping_form.show();
+				same_billing.show();
+			}
+		})
+		same_billing_address.addEventListener('change', function(){
+			if (this.checked){
+				shipping_details.hide();
+				default_shipping.hide();
+			} else {
+				shipping_details.show();
+				default_shipping.show();
+			}
+		})
+
+
+	
+		
+	</script>

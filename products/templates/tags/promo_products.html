@@ -1,0 +1,59 @@
+{% load static %}
+
+{% if collection %}
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+        {% for promo in collection  %}
+			<div class="row">
+            {% if forloop.first %}
+				<!-- section-title -->
+				<div class="col-md-12">
+					<div class="section-title">
+						<h2 class="title">{{promo_header|upper}}</h2>
+						<div class="pull-right">
+							<div class="product-slick-dots-1 custom-dots"></div>
+						</div>
+					</div>
+				</div>
+				<!-- /section-title -->
+            {% endif %}
+            
+				<!-- banner -->
+				<div class="col-md-3 col-sm-6 col-xs-6">
+					<div class="banner banner-2">
+						<img src="{{promo.image.url}}" width="420" height="500" alt="{{promo.header_text}}">
+						<div class="banner-caption">
+							<h2 class="white-color">{{promo.header_text|upper}}</h2>
+							<button class="primary-btn">Shop Now</button>
+						</div>
+					</div>
+				</div>
+				<!-- /banner -->
+
+				<!-- Product Slick -->
+				<div class="col-md-9 col-sm-6 col-xs-6">
+					<div class="row">
+						<div id="product-slick-{{ forloop.counter }}" class="product-slick">
+                        {% for item in promo.item_set.all  %}
+                        {% if item.discount %}
+    {% include "../products/includes/item_snip.html" %}
+                        {% endif %}
+                        {% endfor %}
+						</div>
+					</div>
+				</div>
+				<!-- /Product Slick -->     
+			</div>
+              {% if not forloop.last %}
+                <div class="container"><hr></div>
+                {% endif %}   
+            {% endfor %}
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+  <!-- /section -->
+{% endif %}

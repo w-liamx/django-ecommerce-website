@@ -16,43 +16,29 @@ import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'n6!qxb41showr8o1@)#=u)+_aj%1nb()k76^@a@te4!g*s^g$t'
+SECRET_KEY = 'n6!qxb41showr8o1@)#=u)+_aj%1nb()k76^@a@te4!g*s^g$t'
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG_VALUE') == 'False')
-# DEBUG = True
+# DEBUG = (os.environ.get('DEBUG_VALUE') == 'False')
+DEBUG = True
 
-ALLOWED_HOSTS = ['bannystores.herokuapp.com', '.herokuapp.com']
-
+ALLOWED_HOSTS = ['bannystores.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'products',
-    
-    'widget_tweaks',
-    'django_countries',
-    'storages',
-
-    'django.contrib.sites',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount'
+    'django.contrib.admin', 'django.contrib.auth',
+    'django.contrib.contenttypes', 'django.contrib.sessions',
+    'django.contrib.messages', 'django.contrib.staticfiles', 'products',
+    'stats', 'search', 'widget_tweaks', 'django_countries', 'storages',
+    'django.contrib.sites', 'allauth', 'allauth.account',
+    'allauth.socialaccount', 'django_registration', 'ravepay', 'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -90,10 +76,9 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = "/products"
+LOGIN_REDIRECT_URL = "/products/"
 
 WSGI_APPLICATION = 'cstore.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -103,32 +88,41 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cstore',
         'USER': 'root',
-        'PASSWORD' 'williams10'
+        'PASSWORD'
+        'williams10'
         'HOST': 'localhost:8080',
         'PORT': ''
     }
 }
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME':
+        'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -143,15 +137,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media_cdn")
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -159,15 +148,27 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-STRIPE_SECRET_KEY = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
 
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+PRODUCTS_PER_ROW = 8
 
 django_heroku.settings(locals())
+
+# STRIPE_SECRET_KEY = "sk_test_cc3KvKhaDYSc23pTm6dX9zLy00lPGOVMUc"
+# STRIPE_PUB_KEY = "pk_test_2YHXf3xyzGEMyC6uQb6XWROT00jkxET4OR"
+
+# RAVEPAY_PUBLIC_KEY="FLWPUBK_TEST-1dc2013dd6472b8717782eebc13d72f8-X"
+# RAVEPAY_SECRET_KEY="FLWSECK_TEST-482b42482782b99c473b5c697e13c585-X"
+
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
+
+RAVEPAY_PUBLIC_KEY = os.environ.get('RAVEPAY_PUBLIC_KEY')
+RAVEPAY_SECRET_KEY = os.environ.get('RAVEPAY_SECRET_KEY')

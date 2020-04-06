@@ -1,4 +1,6 @@
 {% extends 'products/base2.html' %}
+{% load static %}
+{% load home_tags %}
 
 {% block content %}
 	<!-- BREADCRUMB -->
@@ -7,7 +9,9 @@
 			<ul class="breadcrumb">
 				<li><a href="{% url 'products:index' %}">Home</a></li>
 				<li><a href="{% url 'products:products-list' %}">Products</a></li>
-				<li><a href="#">{{ object.category }}</a></li>
+				{% for slug, name in breadcrumbs %}
+				<li><a href="/category/{{slug}}">{{ name }}</a></li>
+				{% endfor %}
 				<li class="active">{{ object.title }}</li>
 			</ul>
 		</div>
@@ -62,27 +66,34 @@
 							<p><strong>Availability:</strong> {{ item.get_avaliability_display }}</p>
 							{% if item.brand %}<p><strong>Brand:</strong> {{ item.brand }}</p>{% endif %}
 							<p>{{ object.description }}</p>
+							{% if item.variations.all %}
 							<div class="product-options">
-								{% comment %} <ul class="size-option">
-									<li><span class="text-uppercase">Size:</span></li>
-									<li class="active"><a href="#">S</a></li>
-									<li><a href="#">XL</a></li>
-									<li><a href="#">SL</a></li>
-								</ul>
+							{% for category in item.variations.all %}
+							{% if category.name == "Colors" %}
 								<ul class="color-option">
-									<li><span class="text-uppercase">Color:</span></li>
-									<li class="active"><a href="#" style="background-color:#475984;"></a></li>
-									<li><a href="#" style="background-color:#8A2454;"></a></li>
-									<li><a href="#" style="background-color:#BF6989;"></a></li>
-									<li><a href="#" style="background-color:#9A54D8;"></a></li>
-								</ul> {% endcomment %}
+									<li><span class="text-uppercase">{{ category.name }}:</span></li>
+									{% comment %} <li class="active"><a href="#" style="background-color:#475984;"></a></li> {% endcomment %}
+									{% for value in category.values.all %}
+									<li class="active"><a href="#" style="background-color:{{ value.frontend_value }}; border: 1px solid black"></a></li>
+									{% endfor %}
+								</ul>
+							{% else %}					
+								<ul class="size-option">
+									<li><span class="text-uppercase">{{ category.name }}:</span></li>
+									{% for value in category.values.all %}
+									<li class="text-uppercase"><a href="#">{{ value.frontend_value }}</a></li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+							{% endfor %}
 							</div>
+							{% endif %}
 
 							<div class="product-btns">
-								{% comment %} <div class="qty-input">
+								<div class="qty-input">
 									<span class="text-uppercase">QTY: </span>
 									<input class="input" type="number">
-								</div> {% endcomment %}
+								</div>
 								<a class="primary-btn add-to-cart" href="{{ object.get_add_to_cart_url }}"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
 								<div class="pull-right">
 									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
@@ -199,137 +210,14 @@
 	<div class="section">
 		<!-- container -->
 		<div class="container">
-			<!-- row -->
-			{% comment %} <div class="row">
-				<!-- section title -->
-				<div class="col-md-12">
-					<div class="section-title">
-						<h2 class="title">Picked For You</h2>
-					</div>
-				</div>
-				<!-- section title -->
-
-				<!-- Product Single -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="product product-single">
-						<div class="product-thumb">
-							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="{% static 'img/product04.jpg' %}" alt="">
-						</div>
-						<div class="product-body">
-							<h3 class="product-price">$32.50</h3>
-							<div class="product-rating">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o empty"></i>
-							</div>
-							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-							<div class="product-btns">
-								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Product Single -->
-
-				<!-- Product Single -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="product product-single">
-						<div class="product-thumb">
-							<div class="product-label">
-								<span>New</span>
-							</div>
-							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="{% static 'img/product03.jpg' %}" alt="">
-						</div>
-						<div class="product-body">
-							<h3 class="product-price">$32.50</h3>
-							<div class="product-rating">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o empty"></i>
-							</div>
-							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-							<div class="product-btns">
-								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Product Single -->
-
-				<!-- Product Single -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="product product-single">
-						<div class="product-thumb">
-							<div class="product-label">
-								<span class="sale">-20%</span>
-							</div>
-							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="{% static 'img/product02.jpg' %}" alt="">
-						</div>
-						<div class="product-body">
-							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-							<div class="product-rating">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o empty"></i>
-							</div>
-							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-							<div class="product-btns">
-								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Product Single -->
-
-				<!-- Product Single -->
-				<div class="col-md-3 col-sm-6 col-xs-6">
-					<div class="product product-single">
-						<div class="product-thumb">
-							<div class="product-label">
-								<span>New</span>
-								<span class="sale">-20%</span>
-							</div>
-							<button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-							<img src="{% static 'img/product01.jpg' %}" alt="">
-						</div>
-						<div class="product-body">
-							<h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-							<div class="product-rating">
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star"></i>
-								<i class="fa fa-star-o empty"></i>
-							</div>
-							<h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-							<div class="product-btns">
-								<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-								<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- /Product Single -->
-			</div> {% endcomment %}
-			<!-- /row -->
+			{% home_section related_products "Related Products" %}
 		</div>
 		<!-- /container -->
 	</div>
 	<!-- /section -->
 {% endblock content %}
+
+
+{% block extra_js %}
+	<script src={% static 'js/jquery.zoom.min.js' %}></script>
+{% endblock extra_js%}

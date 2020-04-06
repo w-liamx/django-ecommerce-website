@@ -11,13 +11,24 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 
 
 def unique_slug_generator(instance, new_slug=None):
-
     slug = random_string_generator(size=30)
+    if new_slug is not None:
+        slug = new_slug
+    return slug
 
+def store_url_slug_generator(instance, new_slug=None):
+    slug = slugify(instance.title)
     if new_slug is not None:
         slug = new_slug
 
-    return slug
+    dynamic = instance.__class__
+
+    qs_exists = dynamic.objects.filter(slug=slug).exists()
+    if qs_exists:
+        new_slug = "{slug}-{rndstr}".format(slug=slug, rndstr=random_string_generator(size=8))
+
+        return unique_slug_generator(instance, new_slug=new_slug)
+    return slug 
 
 
 def profile_picture_upload_location(instance, filename):

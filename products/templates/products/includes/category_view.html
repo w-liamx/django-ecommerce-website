@@ -1,0 +1,49 @@
+{% load static %}
+
+{% for category in categories %}
+{% if not category.parent %}
+{% if not category.children.get_queryset %}
+<li><a href="#">{{ category.title }}</a></li>
+{% else %}
+<li class="dropdown side-dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">{{category.title}}<i class="fa fa-angle-right"></i></a>
+    <div class="custom-menu">
+        <div class="row">
+        {% for child in category.children.get_queryset %}
+            <div class="col-md-4">
+                <ul class="list-links">
+                    {% if not child.children.get_queryset %}
+                    <li><a href="#">{{child.title}}</a></li>
+                    {% else %}  
+                    <li>
+                        <h3 class="list-links-title">{{child.title}}</h3>
+                    </li>
+                    {% for subchild in child.children.get_queryset %}
+                    <li><a href="#">{{subchild.title}}</a></li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+                {% if not forloop.last %}
+                <hr class="hidden-md hidden-lg">
+                {% endif %}
+            </div>
+            {% cycle "" "" "</div><div class='row'>" %}
+            {% if forloop.last and not forloop.counter|divisibleby:"3" %}</div>{% endif %}
+        {% endfor %}
+        <div class="row hidden-sm hidden-xs">
+            <div class="col-md-12">
+                <hr>
+                <a class="banner banner-1" href="#">
+                    <img src="{% static 'img/banner05.jpg'%}" alt="">
+                    <div class="banner-caption text-center">
+                        <h2 class="white-color">NEW COLLECTION</h2>
+                        <h3 class="white-color font-weak">HOT DEAL</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</li>
+{% endif %}
+{% endif %}
+{% endfor %}

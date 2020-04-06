@@ -39,10 +39,14 @@
 					<div class="footer">
 						<h3 class="footer-header">My Account</h3>
 						<ul class="list-links">
+						{% if request.user.is_authenticated %}
 							<li><a href="#">My Account</a></li>
 							<li><a href="#">My Wishlist</a></li>
 							<li><a href="#">Compare</a></li>
-							<li><a href="#">Login</a></li>
+						{% else %}
+							<li><a href="{% url 'account_login' %}">Login</a></li>
+							<li><a href="{% url 'account_signup' %}">Sign up</a></li>
+						{% endif %}
 						</ul>
 					</div>
 				</div>

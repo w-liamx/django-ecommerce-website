@@ -4,7 +4,7 @@
       <a href="#" class="active"><i class="fa fa-th-large"></i></a>
       {% comment %} <a href="#"><i class="fa fa-bars"></i></a> {% endcomment %}
     </div>
-    {% comment %} <div class="sort-filter">
+    <div class="sort-filter">
       <span class="text-uppercase">Sort By:</span>
       <select class="input">
         <option value="0">Position</option>
@@ -12,7 +12,7 @@
         <option value="0">Rating</option>
       </select>
       <a href="#" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></a>
-    </div>{% endcomment %}
+    </div>
   </div> 
   <div class="pull-right">
   {% comment %}
@@ -24,54 +24,28 @@
         <option value="2">30</option>
       </select>
     </div> {% endcomment %}
-	{% if is_paginated %}
-    <ul class="store-pages">
-      <nav class="d-flex justify-content-center wow fadeIn">
-        <ul class="pg-red">
-		<li><p>Page: </p></li>
+<ul class="reviews-pages">
+{% if object_list.qs.has_other_pages %}
+{% if object_list.qs.has_previous %}
+  <li><a href="?page={{object_list.qs.previous_page_number}}"><i class="fa fa-caret-left"></i></a></li>
+{% else %}
+  <li><i class="fa fa-caret-left"></i></li>
+{% endif %}
+{% for p in object_list.qs.paginator.page_range %}
+  {% if object_list.qs.number == p %}
+  <li class="active">{{p}}</li>
+  {% elif p > object_list.qs.number|add:'-3' and p < object_list.qs.number|add:'3' %}
+  <li><a href="?page={{p}}">{{p}}</a></li>
+  {% endif %}
+{% endfor %}
+{% if object_list.qs.has_next %}
+  <li><a href="?page={{object_list.qs.next_page_number}}"><i class="fa fa-caret-right"></i></a></li>
+{% else %}
+  <li><i class="disabled fa fa-caret-right"></i></li>
+{% endif %}
+{% endif %}
+</ul>
 
-          <!--Arrow left-->
-		  {% if page_obj.has_previous%}
-          <li class="page-item">
-            <a class="page-link" id="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-              <span class="sr-only">Previous</span>
-            </a>
-          </li>
-		  {% endif %}
-        {% for p in page_obj.paginator.page_range %}
-          {% if page_obj.number == p %}
-          <li class="page-item active-page">
-            <a class="page-link" id="page-link" href="#">{{ p }}
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          {% elif p > page_obj.number|add:'-3' and p < page_obj.number|add:'3' %}
-          <li class="page-item">
-            <a class="page-link" id="page-link" href="?page={{p}}">{{ p }}
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          {% endif %}
-        {% endfor %}
-          {% comment %} <li class="page-item active">
-            <a class="page-link" id="page-link" href="#">{{ page_obj.number }}
-              <span class="sr-only">(current)</span>
-            </a>
-        </li> {% endcomment %}
-
-		  {% if page_obj.has_next%}
-          <li class="page-item">
-            <a class="page-link" id="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-              <span class="sr-only">Next</span>
-            </a>
-          </li>
-		  {% endif %}
-        </ul>
-      </nav>
-      <!--Pagination-->
-    </ul>
-	{% endif %}
+	
   </div>
 </div>
