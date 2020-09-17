@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages', 'django.contrib.staticfiles', 'products',
     'stats', 'search', 'widget_tweaks', 'django_countries', 'storages',
     'django.contrib.sites', 'allauth', 'allauth.account',
-    'allauth.socialaccount', 'django_registration', 'django_filters', 'rest_framework',
-    'rest_framework.authtoken','rest_auth','rest_auth.registration'
+    'allauth.socialaccount', 'django_registration', 'django_filters',
+    'rest_framework', 'rest_framework.authtoken', 'rest_auth',
+    'rest_auth.registration'
 ]
 
 MIDDLEWARE = [
@@ -86,12 +87,8 @@ WSGI_APPLICATION = 'cstore.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cstore',
-        'USER': 'root',
-        'PASSWORD'
-        'HOST': 'localhost:8080',
-        'PORT': ''
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
