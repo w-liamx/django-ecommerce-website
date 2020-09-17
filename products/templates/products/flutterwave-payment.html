@@ -111,23 +111,25 @@
                                 <form>
                                     <div class="row">
                                         <div class="col-md-8">
-                                        <label for="">Email address</label>
+                                        <label for="email">Email address</label>
                                         <input type="text" name="email" id="email" class="form-control border-input" placeholder="Enter email address" style="margin-bottom: 30px;">
                                         </div>
                                     </div>
                                 <form>
                                     <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
-                                    <button type="button" onClick="payWithRave()">Pay Now</button>
+                                    <button class="primary-btn" type="button" onClick="payWithRave()">Pay Now</button>
                                 </form>
 
                                 <script>
                                     const API_publicKey = "FLWPUBK_TEST-1dc2013dd6472b8717782eebc13d72f8-X";
+                                    var amount = "{{order.items.get_total|safe}}";
+                                    var user_email = "{{request.user.email|safe}}"
 
                                     function payWithRave() {
                                         var x = getpaidSetup({
                                             PBFPubKey: API_publicKey,
-                                            customer_email: "user@example.com",
-                                            amount: 2000,
+                                            customer_email: user_email,
+                                            amount: amount,
                                             customer_phone: "234099940409",
                                             currency: "NGN",
                                             txref: "rave-123456",

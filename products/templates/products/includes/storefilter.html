@@ -1,21 +1,18 @@
+{% load template_helpers %}
+
 <div class="store-filter clearfix">
   <div class="pull-left">
     <div class="row-filter">
       <a href="#" class="active"><i class="fa fa-th-large"></i></a>
-      {% comment %} <a href="#"><i class="fa fa-bars"></i></a> {% endcomment %}
+      <a href="#"><i class="fa fa-bars"></i></a>
     </div>
     <div class="sort-filter">
-      <span class="text-uppercase">Sort By:</span>
-      <select class="input">
-        <option value="0">Position</option>
-        <option value="0">Price</option>
-        <option value="0">Rating</option>
-      </select>
+      <span class="text-uppercase">{{sortform.sort_by.label_tag|striptags}}</span>
+      {{sortform.sort_by}}
       <a href="#" class="main-btn icon-btn"><i class="fa fa-arrow-down"></i></a>
     </div>
   </div> 
   <div class="pull-right">
-  {% comment %}
     <div class="page-filter">
       <span class="text-uppercase">Show:</span>
       <select class="input">
@@ -23,29 +20,27 @@
         <option value="1">20</option>
         <option value="2">30</option>
       </select>
-    </div> {% endcomment %}
-<ul class="reviews-pages">
-{% if object_list.qs.has_other_pages %}
-{% if object_list.qs.has_previous %}
-  <li><a href="?page={{object_list.qs.previous_page_number}}"><i class="fa fa-caret-left"></i></a></li>
-{% else %}
-  <li><i class="fa fa-caret-left"></i></li>
-{% endif %}
-{% for p in object_list.qs.paginator.page_range %}
-  {% if object_list.qs.number == p %}
-  <li class="active">{{p}}</li>
-  {% elif p > object_list.qs.number|add:'-3' and p < object_list.qs.number|add:'3' %}
-  <li><a href="?page={{p}}">{{p}}</a></li>
-  {% endif %}
-{% endfor %}
-{% if object_list.qs.has_next %}
-  <li><a href="?page={{object_list.qs.next_page_number}}"><i class="fa fa-caret-right"></i></a></li>
-{% else %}
-  <li><i class="disabled fa fa-caret-right"></i></li>
-{% endif %}
-{% endif %}
-</ul>
-
-	
+    </div>
+    <ul class="reviews-pages">
+      {% if results.has_other_pages %}
+      {% if results.has_previous %}
+        <li><a href="?page={{results.previous_page_number}}"><i class="fa fa-caret-left"></i></a></li>
+      {% else %}
+        <li><i class="fa fa-caret-left"></i></li>
+      {% endif %}
+      {% for p in results.paginator.page_range %}
+        {% if results.number == p %}
+        <li class="active">{{p}}</li>
+        {% elif p > results.number|add:'-3' and p < results.number|add:'3' %}
+        <li><a href="{% relative_url p 'page' request.GET.urlencode %}">{{p}}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if results.has_next %}
+        <li><a href="?page={{results.next_page_number}}"><i class="fa fa-caret-right"></i></a></li>
+      {% else %}
+        <li><i class="disabled fa fa-caret-right"></i></li>
+      {% endif %}
+      {% endif %}
+    </ul>
   </div>
 </div>

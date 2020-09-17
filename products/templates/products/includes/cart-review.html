@@ -10,7 +10,7 @@
                                 {% for order_item in order.items.items.all %}
                                     <div class="product product-widget">
                                         <div class="product-thumb">
-                                            <img src="{{ order_item.item.image.url }}" alt="">
+                                            <img src="{{ order_item.item.image.url }}" alt="{{order_item.item.title}}">
                                         </div>
                                         <div class="product-body">
                                         {% if order_item.item.discount %}
@@ -32,7 +32,7 @@
                                 {% if order.coupon.code %}
                                 <div class="product product-widget">
                                     <div class="product-thumb">
-                                    <img src="{% static 'img/banny.png' %}" alt="" />
+                                    <img src="{% static 'img/banny.png' %}" alt="bannystores" />
                                     </div>
                                     <div class="product-body">
                                     <div>
@@ -46,7 +46,7 @@
                                 </div>
                                 <hr>
                                 <div class="pull-right" style="padding-right:15px">
-                                    <h2>Total: </h2><h3 class="product-price inline">{{ order.items.get_total }}</h3>
+                                    <h2 class="primary-color" style="display:inline-block">Total:&nbsp;</h2><h2 style="display:inline-block" class="primary-color product-price">${{ order.items.get_total }}</h2>
                                 </div>
                             </div>
 						</div>

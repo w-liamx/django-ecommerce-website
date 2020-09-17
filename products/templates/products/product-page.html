@@ -30,14 +30,14 @@
 				<div class="product product-details clearfix">
 					<div class="col-md-6">
 						<div id="product-main-view">
-						{% for i in item.largeimage_set.all %}
+						{% for i in item.productimage_set.all %}
 							<div class="product-view">
 								<img src="{{ i.large_image.url }}" alt="">
 							</div>
 						{% endfor %}
 						</div>
 						<div id="product-view">
-						{% for i in item.thumb_image_set.all %}
+						{% for i in item.productimage_set.all %}
 							<div class="product-view">
 								<img src="{{ i.thumb_image.url }}" alt="">
 							</div>
@@ -69,7 +69,7 @@
 							{% if item.variations.all %}
 							<div class="product-options">
 							{% for category in item.variations.all %}
-							{% if category.name == "Colors" %}
+							{% if category.colors %}
 								<ul class="color-option">
 									<li><span class="text-uppercase">{{ category.name }}:</span></li>
 									{% comment %} <li class="active"><a href="#" style="background-color:#475984;"></a></li> {% endcomment %}

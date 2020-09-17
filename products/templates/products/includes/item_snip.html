@@ -3,7 +3,9 @@
         <div class="product-thumb">
             <div class="product-label">
                 <span>New</span>
+                {% if item.discount %}
                 <span class="sale">-{{ item.get_percentage_discount }}%</span>
+                {% endif %}
             </div>
             {% if show_timer %}
             <ul class="product-countdown">
@@ -16,7 +18,11 @@
             <img src={{item.image.url}} width="270" height="360" alt="">
         </div>
         <div class="product-body">
-            <h3 class="product-price">${{ item.price }} <del class="product-old-price">${{ item.discount }}</del></h3>
+            {% if item.discount %}
+                <h3 class="product-price">${{ item.discount }} <del class="product-old-price">${{ item.price }}</del></h3>
+            {% else %}
+                <h3 class="product-price">${{ item.price }}</h3>
+            {% endif %}
             <div class="product-rating stars-rating" data-rating="{{item.get_avg_rating}}" data-num-stars="5" alt="rated {{item.get_avg_rating}} of 5 stars"></div>
             <h2 class="product-name"><a href="{{ item.get_absolute_url }}">{{ item.title }} </a>| <span class="font-weak"><a href="#">{{ item.category.name }}</a></span></h2> 
             <span class="font-weak"><a href="#">{{ item.brand }}</a></span>

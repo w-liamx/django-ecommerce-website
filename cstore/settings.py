@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.environ.get('DEBUG_VALUE') == 'False')
+DEBUG = (os.environ.get('DEBUG_VALUE') == 'True')
 # DEBUG = True
 
 ALLOWED_HOSTS = ['bannystores.herokuapp.com', '127.0.0.1']
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages', 'django.contrib.staticfiles', 'products',
     'stats', 'search', 'widget_tweaks', 'django_countries', 'storages',
     'django.contrib.sites', 'allauth', 'allauth.account',
-    'allauth.socialaccount', 'django_registration', 'django_filters'
+    'allauth.socialaccount', 'django_registration', 'django_filters', 'rest_framework',
+    'rest_framework.authtoken','rest_auth','rest_auth.registration'
 ]
 
 MIDDLEWARE = [
@@ -178,14 +179,14 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+# DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 PRODUCTS_PER_ROW = 8
 

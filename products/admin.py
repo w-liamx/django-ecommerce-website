@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (Category, Item, CartItem, Cart, Order, Payment, Coupon,
-                     LargeImage, Thumb_Image, Review, Variation,
-                     VarCategoryValues, Collection, Brand, Address)
+                     ProductImage, Review, Variation, VarCategoryValues,
+                     Collection, Brand, Address)
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -25,18 +25,13 @@ class AddressAdmin(admin.ModelAdmin):
     ]
 
 
-class LargeImagesCreateInline(admin.TabularInline):
-    model = LargeImage
-    extra = 1
-
-
-class ThumbImagesCreateInline(admin.TabularInline):
-    model = Thumb_Image
+class ProductImageCreateInline(admin.TabularInline):
+    model = ProductImage
     extra = 1
 
 
 class ItemAdmin(admin.ModelAdmin):
-    inlines = [LargeImagesCreateInline, ThumbImagesCreateInline]
+    inlines = [ProductImageCreateInline]
 
 
 # Register your models here.

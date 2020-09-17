@@ -12,7 +12,7 @@ from .forms import CheckoutForm, CouponForm, ReviewForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import uuid
 from stats import stats
-from search.filter import ProductsSearch, FilterQuery
+from search.filter import ProductsSearch, SortForm
 from django.db.models import Q
 
 import stripe
@@ -55,7 +55,9 @@ def show_category(request, hierarchy=None):
 
 class ProductList(View):
     def get(self, request, *args, **kwargs):
+        sortForm = SortForm(request.GET or None)
         value = request.GET.get('query', '')
+        sort_by = request.GET.get('sort_by', '')
         # store search query in the database
         if len(value) > 2:
             term = SearchTerm()
@@ -66,11 +68,14 @@ class ProductList(View):
             if request.user.is_authenticated:
                 term.user = request.user
             term.save()
-        products = ProductsSearch(request.GET, queryset=Item.objects.all())
-        filter_queryset = FilterQuery(request.GET, queryset=products.qs)
-
-        results = filter_queryset.qs
-        paginator = Paginator(results, 1)
+        products = ProductsSearch(request.GET or None,
+                                  queryset=Item.objects.all())
+        if sort_by:
+            results_qs = products.qs.order_by(sort_by)
+        else:
+            results_qs = products.qs.order_by('price')
+        print(request.get_full_path)
+        paginator = Paginator(results_qs, 1)
 
         page = request.GET.get('page')
         try:
@@ -82,7 +87,9 @@ class ProductList(View):
 
         context = {
             'object_list': products,
-            'object_list': filter_queryset,
+            'sortform': sortForm,
+            'page':page,
+            'results': results
         }
         return render(request, "products/products.html", context)
 
@@ -115,15 +122,6 @@ class CollectionSearch(View):
     def get(self, request, slug):
         collection = get_object_or_404(Collection, slug=slug)
         products = FilterQuery(request.GET, queryset=collection.item_set.all())
-        paginator = Paginator(products.qs, 5)
-
-        page = request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
 
         context = {"object_list": products}
         return render(self.request, "products/search-results.html", context)

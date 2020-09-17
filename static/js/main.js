@@ -147,7 +147,6 @@
   if (slider) {
     noUiSlider.create(slider, {
       start: [minInput(valueInputMin), maxInput(valueInputMax)],
-      steps: 10,
       margin: 10,
       connect: true,
       tooltips: [true, true],
@@ -165,6 +164,10 @@
       }
     });
   }
+
+  // slider.noUiSlider.on("update", function(values, handle) {
+  //   inputs[handle].value = values[handle];
+  // });
 
   valueInputMin.addEventListener("change", function() {
     slider.noUiSlider.set([this.value, maxInput(valueInputMax)]);

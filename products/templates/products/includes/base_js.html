@@ -35,6 +35,9 @@
 		$('.filter-option').click(function(){	
 			$('#filter-form').submit()		
 		})
+		$('select[name="sort_by"]').change(function(){
+			$('#filter-form').submit()		
+		})
 
 		var billing_form  = $('.billing_form')
 		var shipping_form = $('.shipping_form')

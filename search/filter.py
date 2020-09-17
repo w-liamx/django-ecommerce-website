@@ -8,11 +8,11 @@ from functools import reduce
 import operator
 
 
-def search_words(value, queryset):
+def search_words(queryset, value):
     search_term = value
-    stopwords = ['a', 'is', 'the', 'of']
+    stopwords = ['a', 'is', 'the', 'of', 'and']
     search_words = []
-    if len(search_term.split()) > 1:
+    if search_term.split():
         w = list(
             filter(lambda w: w not in stopwords,
                    re.split(r"\W+", search_term.lower())))
@@ -30,10 +30,18 @@ def search_words(value, queryset):
                 for term in search_words))).distinct()
 
 
-class ProductsSearch(django_filters.FilterSet):
+ORDERING_CHOICES = (('price', 'Price'), ('discount', 'Discount'))
 
-    # def __init__(self, q, *args, **kwargs):
-    #     super(ProductsSearch, self).__init__(*args, **kwargs)
+
+class SortForm(forms.Form):
+    sort_by = forms.ChoiceField(widget=forms.Select(attrs={'class': 'input'}),
+                                choices=ORDERING_CHOICES,
+                                initial='price')
+
+
+class ProductsSearch(django_filters.FilterSet):
+    def __init__(self, q, *args, **kwargs):
+        super(ProductsSearch, self).__init__(q, *args, **kwargs)
 
     query = django_filters.CharFilter(
         method='filter_products',
@@ -49,18 +57,6 @@ class ProductsSearch(django_filters.FilterSet):
         }),
         empty_label="All categories")
 
-    class Meta:
-        model = Item
-        fields = ['query', 'category']
-
-    def filter_by_category(self, queryset, name, value):
-        return queryset.filter(category__parent=value).distinct()
-
-    def filter_products(self, queryset, name, value):
-        search_words(queryset, value)
-
-
-class FilterQuery(django_filters.FilterSet):
     brand = django_filters.ModelMultipleChoiceFilter(
         queryset=Brand.objects.all(),
         widget=forms.CheckboxSelectMultiple(
@@ -85,4 +81,17 @@ class FilterQuery(django_filters.FilterSet):
 
     class Meta:
         model = Item
-        fields = ['brand', 'price_min', 'price_max']
+        fields = [
+            'query',
+            'category',
+            'brand',
+            'price_min',
+            'price_max',
+        ]
+
+    def filter_by_category(self, queryset, name, value):
+        return queryset.filter(category__parent=value).distinct()
+
+    def filter_products(self, queryset, name, value):
+        qs = search_words(queryset, value)
+        return qs.order_by('price')

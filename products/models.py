@@ -21,9 +21,10 @@ import uuid
 #         return self.filter(featured=True)\
 #             .filter(featured_start_date_lt=timezone.now())\
 #             .filter(featured_end_date_gte=timezone.now())
-        
+
 #     def add_to_carousel(self):
 #         return self.filter(add_to_carousel=True)
+
 
 class CategoryManager(models.Manager):
     # def get_queryset(self):
@@ -37,13 +38,16 @@ class Category(models.Model):
     slug = models.SlugField(blank=True)
     title = models.CharField(max_length=50)
     show_in_homepage = models.BooleanField(default=False)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='children')
+    parent = models.ForeignKey('self',
+                               on_delete=models.CASCADE,
+                               blank=True,
+                               null=True,
+                               related_name='children')
 
     objects = CategoryManager()
 
     class Meta:
         verbose_name_plural = "categories"
-
 
     def __str__(self):
         full_path = [self.title]
@@ -54,18 +58,11 @@ class Category(models.Model):
         return ' > '.join(full_path[::-1])
 
 
-class LargeImage(models.Model):
+class ProductImage(models.Model):
     item_instance = models.ForeignKey('Item', on_delete=models.CASCADE)
     large_image = models.ImageField(upload_to='images/large/',
                                     blank=True,
                                     null=True)
-
-    def __str__(self):
-        return self.item_instance.title
-
-
-class Thumb_Image(models.Model):
-    item_instance = models.ForeignKey('Item', on_delete=models.CASCADE)
     thumb_image = models.ImageField(upload_to='images/thumb/',
                                     blank=True,
                                     null=True)
@@ -75,27 +72,34 @@ class Thumb_Image(models.Model):
 
 
 AVALIABILITY_CHOICES = (('1', 'IN STOCK'), ('0', 'OUT OF STOCK'))
-    
+
 
 class VarCategoryValues(models.Model):
     name = models.CharField(max_length=50)
     frontend_value = models.CharField(max_length=50, blank=True, null=True)
-    image = models.ImageField(upload_to='images/variations/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/variations/',
+                              blank=True,
+                              null=True)
     price = models.FloatField('Variation price', blank=True, null=True)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
-    
+
+
 class Variation(models.Model):
     name = models.CharField(max_length=50)
     values = models.ManyToManyField(VarCategoryValues)
+    colors = models.BooleanField(
+        help_text='click the checkbox if this is a color variation',
+        default=False)
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+
 
 class Brand(models.Model):
     slug = models.SlugField(blank=True)
@@ -107,13 +111,15 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.title
-       
 
 
 class Item(models.Model):
     slug = models.SlugField(blank=True)
     title = models.CharField(max_length=100)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, blank=True, null=True)
+    brand = models.ForeignKey(Brand,
+                              on_delete=models.CASCADE,
+                              blank=True,
+                              null=True)
     price = models.FloatField()
     discount = models.FloatField('Discount price', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
@@ -135,8 +141,8 @@ class Item(models.Model):
         while k is not None:
             breadcrumb.append(k.slug)
             k = k.parent
-        for i in range(len(breadcrumb)-1):
-            breadcrumb[i] = '/'.join(breadcrumb[-1:i-1:-1])
+        for i in range(len(breadcrumb) - 1):
+            breadcrumb[i] = '/'.join(breadcrumb[-1:i - 1:-1])
         return breadcrumb[-1:0:-1]
 
     def get_avg_rating(self):
@@ -159,6 +165,7 @@ class Item(models.Model):
         if self.discount:
             return round(((self.price - self.discount) / self.price) * 100)
 
+
 class CollectionQueryset(models.query.QuerySet):
     def active(self):
         return self.filter(active=True)
@@ -167,9 +174,10 @@ class CollectionQueryset(models.query.QuerySet):
         return self.filter(featured=True)\
             .filter(featured_start_date_lt=timezone.now())\
             .filter(featured_end_date_gte=timezone.now())
-        
+
     def add_to_carousel(self):
         return self.filter(add_to_carousel=True)
+
 
 class CollectionManager(models.Manager):
     def get_queryset(self):
@@ -186,40 +194,54 @@ class CollectionManager(models.Manager):
 
     def featured(self):
         return self.get_queryset().active().featured()
-    
+
     def carousels(self):
         return self.get_queryset().active().add_to_carousel()
 
 
-TEXT_COLOR_CHOICES = (
-    ('primary-color', 'Theme-color'),
-    ('white-color', 'white-color'),
-    ('black-color', 'black-color')
-)
-POSITION_CHOICES  = (
-    ('text-center', 'text-center'),
-    ('left', 'left')
-)
-    
+TEXT_COLOR_CHOICES = (('primary-color', 'Theme-color'),
+                      ('white-color', 'white-color'), ('black-color',
+                                                       'black-color'))
+POSITION_CHOICES = (('text-center', 'text-center'), ('left', 'left'))
+
 
 class Collection(models.Model):
     slug = models.SlugField(blank=True)
     title = models.CharField(max_length=30)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, blank=True, null=True)
+    brand = models.ForeignKey(Brand,
+                              on_delete=models.CASCADE,
+                              blank=True,
+                              null=True)
     header_text = models.CharField(max_length=100)
-    header_text_color = models.CharField(max_length=20, default='primary-color', choices=TEXT_COLOR_CHOICES)
+    header_text_color = models.CharField(max_length=20,
+                                         default='primary-color',
+                                         choices=TEXT_COLOR_CHOICES)
     brief_description = models.TextField(max_length=500)
-    text_position = models.CharField(max_length=20, default='text-center', choices=POSITION_CHOICES) 
+    text_position = models.CharField(max_length=20,
+                                     default='text-center',
+                                     choices=POSITION_CHOICES)
     image = models.ImageField()
     large_image = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
-    featured_start_date = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
-    featured_end_date = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
+    featured_start_date = models.DateTimeField(auto_now=False,
+                                               auto_now_add=False,
+                                               blank=True,
+                                               null=True)
+    featured_end_date = models.DateTimeField(auto_now=False,
+                                             auto_now_add=False,
+                                             blank=True,
+                                             null=True)
     active = models.BooleanField(default=False)
     add_to_carousel = models.BooleanField(default=False)
     is_promo = models.BooleanField(default=False)
-    countdown_start_date = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
-    countdown_end_date = models.DateTimeField(auto_now=False, auto_now_add=False, blank=True, null=True)
+    countdown_start_date = models.DateTimeField(auto_now=False,
+                                                auto_now_add=False,
+                                                blank=True,
+                                                null=True)
+    countdown_end_date = models.DateTimeField(auto_now=False,
+                                              auto_now_add=False,
+                                              blank=True,
+                                              null=True)
 
     objects = CollectionManager()
 
@@ -244,6 +266,7 @@ class Review(models.Model):
 
     def __str__(self):
         return "%s | %s" % (self.item.title, self.user_name)
+
 
 class CartItemManager(models.Manager):
     def get_or_new(self, request, slug):
@@ -291,7 +314,9 @@ class CartItem(models.Model):
                              on_delete=models.CASCADE,
                              blank=True,
                              null=True)
-    unique_id = models.UUIDField(auto_created=True, default=uuid.uuid4, blank=True)
+    unique_id = models.UUIDField(auto_created=True,
+                                 default=uuid.uuid4,
+                                 blank=True)
     ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
@@ -317,7 +342,9 @@ class CartItem(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, blank=True, null=True)
+                             on_delete=models.CASCADE,
+                             blank=True,
+                             null=True)
     items = models.ManyToManyField(CartItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered = models.BooleanField(default=False)
@@ -337,6 +364,7 @@ class Cart(models.Model):
             total -= self.coupon.amount
         return round(total, 2)
 
+
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
@@ -350,10 +378,10 @@ class Order(models.Model):
                                         blank=True,
                                         null=True)
     shipping_address = models.ForeignKey('Address',
-                                        on_delete=models.SET_NULL,
-                                        related_name='shipping_address',
-                                        blank=True,
-                                        null=True)
+                                         on_delete=models.SET_NULL,
+                                         related_name='shipping_address',
+                                         blank=True,
+                                         null=True)
     payment = models.ForeignKey('Payment',
                                 on_delete=models.SET_NULL,
                                 blank=True,
@@ -366,10 +394,13 @@ class Order(models.Model):
     def __str__(self):
         return str(self.id)
 
+
 ADDRESS_CHOICES = (
     ('B', 'Billing'),
     ('S', 'Shipping'),
 )
+
+
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE)
@@ -404,19 +435,21 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
 
+
 def pre_save_item(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+
 
 def pre_save_slug(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = store_url_slug_generator(instance)
 
+
 pre_save.connect(pre_save_slug, sender=Collection)
 pre_save.connect(pre_save_slug, sender=Brand)
 pre_save.connect(pre_save_slug, sender=Category)
 pre_save.connect(pre_save_item, sender=Item)
-
 
 
 def attach_cart(sender, **kwargs):
@@ -442,14 +475,17 @@ def attach_cart(sender, **kwargs):
             # If there is, we iterate through the items in the cart to know if the user has added a clone of an old item in the new cart
             if old_cart:
                 for item in new_cart.items.all():
-                    if old_cart.items.all().filter(item__slug=item.item.slug).exists(): #If the item exists, we delete that item from the new cart else we add it to the old cart.
+                    if old_cart.items.all(
+                    ).filter(item__slug=item.item.slug).exists(
+                    ):  #If the item exists, we delete that item from the new cart else we add it to the old cart.
                         item.delete()
                     else:
                         item.user_id = user.id
                         item.save()
                         old_cart.items.add(item)
                 cart = old_cart
-                new_cart.delete() # we delete the cart that was created with session after adding new items to user's cart             
+                new_cart.delete(
+                )  # we delete the cart that was created with session after adding new items to user's cart
             else:
                 new_cart.user_id = user.id
                 new_cart.save()

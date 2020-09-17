@@ -55,6 +55,6 @@ def top_rated(section_header):
 
 @register.inclusion_tag("products/includes/search_form.html")
 def search_form(request):
-    products = ProductsSearch(request.GET, queryset=Item.objects.all())
+    products = ProductsSearch(request.GET or None, queryset=Item.objects.all())
 
     return {'object_list': products}
