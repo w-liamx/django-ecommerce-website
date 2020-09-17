@@ -88,7 +88,7 @@ class ProductList(View):
         context = {
             'object_list': products,
             'sortform': sortForm,
-            'page':page,
+            'page': page,
             'results': results
         }
         return render(request, "products/products.html", context)
@@ -121,7 +121,8 @@ class IndexView(View):
 class CollectionSearch(View):
     def get(self, request, slug):
         collection = get_object_or_404(Collection, slug=slug)
-        products = FilterQuery(request.GET, queryset=collection.item_set.all())
+        products = ProductsSearch(
+            request.GET, queryset=collection.item_set.all())
 
         context = {"object_list": products}
         return render(self.request, "products/search-results.html", context)
@@ -416,7 +417,7 @@ class StripPaymentView(View):
         order = Order.objects.get(user=self.request.user, ordered=False)
         # token = self.request.POST.get('stripeToken')
         token = "tok_visa"
-        amount = int(order.items.get_total() * 100)  #cents
+        amount = int(order.items.get_total() * 100)  # cents
         try:
             charge = stripe.Charge.create(amount=amount,
                                           currency="usd",
@@ -428,7 +429,7 @@ class StripPaymentView(View):
             payment.amount = order.items.get_total()
             payment.save()
 
-            #assign payment to order
+            # assign payment to order
             order_items = order.items.items.all()
             order_items.update(ordered=True)
             for item in order_items:
@@ -482,7 +483,7 @@ class StripPaymentView(View):
 
         except Exception as e:
             # Something else happened, completely unrelated to Stripe
-            #send email to admin
+            # send email to admin
             messages.warning(self.request,
                              "A serious error occured. We have been notified")
             return redirect("/products")

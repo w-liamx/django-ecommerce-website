@@ -13,18 +13,6 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404
 import uuid
 
-# class CategoryQueryset(models.query.QuerySet):
-#     def active(self):
-#         return self.filter(active=True)
-
-#     def featured(self):
-#         return self.filter(featured=True)\
-#             .filter(featured_start_date_lt=timezone.now())\
-#             .filter(featured_end_date_gte=timezone.now())
-
-#     def add_to_carousel(self):
-#         return self.filter(add_to_carousel=True)
-
 
 class CategoryManager(models.Manager):
     # def get_queryset(self):
@@ -465,7 +453,6 @@ def attach_cart(sender, **kwargs):
         new cart using the items' slugs. If they exist, we keep one.
         We add the items from the new cart to the old one, assign the logged in user to each of them
         and then delete the order he created when the user was anonymous.
-        If 
         '''
         cart = None
         try:
@@ -477,7 +464,7 @@ def attach_cart(sender, **kwargs):
                 for item in new_cart.items.all():
                     if old_cart.items.all(
                     ).filter(item__slug=item.item.slug).exists(
-                    ):  #If the item exists, we delete that item from the new cart else we add it to the old cart.
+                    ):  # If the item exists, we delete that item from the new cart else we add it to the old cart.
                         item.delete()
                     else:
                         item.user_id = user.id

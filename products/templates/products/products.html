@@ -1,96 +1,117 @@
-{% extends "products/base2.html" %}
-{% load static %}
+{% extends "products/base2.html" %} {% load static %} {% block content %}
+<!-- BREADCRUMB -->
+<div id="breadcrumb">
+  <div class="container">
+    <ul class="breadcrumb">
+      <li><a href="{% url 'products:index' %}">Home</a></li>
+      <li><a href="#">Products</a></li>
+    </ul>
+  </div>
+</div>
+<!-- /BREADCRUMB -->
 
+<!-- section -->
+<div class="section">
+  <!-- container -->
+  <div class="container">
+    <form action="." id="filter-form" method="GET">
+      <!-- row -->
+      <div class="row">
+        {% include 'products/includes/aside-filters.html' %}
+        <!-- MAIN -->
+        <div id="main" class="col-md-9">
+          <!-- store top filter -->
+          {% include 'products/includes/storefilter.html' %}
+          <!-- /store top filter -->
+          <!-- STORE -->
+          <div id="store">
+            <!-- row -->
+            <div class="row">
+              {% for item in results %}
+              <!-- Product Single -->
+              <div class="col-md-4 col-sm-6 col-xs-6">
+                <div class="product product-single">
+                  <div class="product-thumb">
+                    <div class="product-label">
+                      <span>New</span>
+                      {% if item.discount %}
+                      <span class="sale"
+                        >-{{ item.get_percentage_discount }}%</span
+                      >
+                      {% endif %}
+                    </div>
+                    <a
+                      class="main-btn quick-view"
+                      href="{{ item.get_absolute_url }}"
+                      ><i class="fa fa-search-plus"></i> View</a
+                    >
+                    <img
+                      src="{{item.image.url}}"
+                      width="270"
+                      height="360"
+                      alt=""
+                    />
+                  </div>
+                  <div class="product-body">
+                    {% if item.discount %}
+                    <h3 class="product-price">
+                      ${{ item.discount }}
+                      <del class="product-old-price">${{ item.price }}</del>
+                    </h3>
+                    {% else %}
+                    <h3 class="product-price">${{ item.price }}</h3>
+                    {% endif %}
+                    <div
+                      class="product-rating stars-rating"
+                      data-rating="{{item.get_avg_rating}}"
+                      data-num-stars="5"
+                      alt="rated {{item.get_avg_rating}}"
+                    ></div>
+                    <h2 class="product-name">
+                      <a href="{{ item.get_absolute_url }}">{{item.title}}</a>
+                    </h2>
+                    <div class="product-btns">
+                      <button class="main-btn icon-btn">
+                        <i class="fa fa-heart"></i>
+                      </button>
+                      <button class="main-btn icon-btn">
+                        <i class="fa fa-exchange"></i>
+                      </button>
+                      <a
+                        href="{{ item.get_add_to_cart_url }}"
+                        class="primary-btn add-to-cart"
+                        ><i class="fa fa-shopping-cart"></i> Add to Cart</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {%empty%}
+              <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+                <h2>No Products Found</h2>
+              </div>
 
-{% block content %}
-	<!-- BREADCRUMB -->
-	<div id="breadcrumb">
-		<div class="container">
-			<ul class="breadcrumb">
-				<li><a href="{% url 'products:index' %}">Home</a></li>
-				<li><a href="#">Products</a></li>
-			</ul>
-		</div>
-	</div>
-	<!-- /BREADCRUMB -->
+              <!-- /Product Single -->
+              {% endfor %}
 
-	<!-- section -->
-	<div class="section">
-		<!-- container -->
-		<div class="container">
-		<form action="." id="filter-form" method="GET">
-			<!-- row -->
-			<div class="row">
-				{% include 'products/includes/aside-filters.html' %}
-				<!-- MAIN -->
-				<div id="main" class="col-md-9">
-					<!-- store top filter -->
-					{% include 'products/includes/storefilter.html' %}
-					<!-- /store top filter -->
-					<!-- STORE -->
-					<div id="store">
-						<!-- row -->
-						<div class="row">
-						{% for item in results %}
-							<!-- Product Single -->
-							<div class="col-md-4 col-sm-6 col-xs-6">
-								<div class="product product-single">
-									<div class="product-thumb">
-										<div class="product-label">
-											<span>New</span>
-											{% if item.discount %}
-											<span class="sale">-{{ item.get_percentage_discount }}%</span>
-											{% endif %}
-										</div>
-										<a class="main-btn quick-view" href="{{ item.get_absolute_url }}"><i class="fa fa-search-plus"></i> View</a>
-										<img src={{item.image.url}} width="270" height="360" alt="">
-									</div>
-									<div class="product-body">
-									{% if item.discount %}
-										<h3 class="product-price">${{ item.discount }} <del class="product-old-price">${{ item.price }}</del></h3>
-									{% else %}
-										<h3 class="product-price">${{ item.price }}</h3>
-									{% endif %}
-										<div class="product-rating stars-rating" data-rating="{{item.get_avg_rating}}" data-num-stars="5" alt="rated {{item.get_avg_rating}}"></div>
-										<h2 class="product-name"><a href="{{ item.get_absolute_url }}">{{item.title}}</a></h2>
-										<div class="product-btns">
-											<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-											<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-											<a href="{{ item.get_add_to_cart_url }}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</a>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /Product Single -->
-						{% endfor %}
+              <div class="clearfix visible-sm visible-xs"></div>
 
+              <div class="clearfix visible-md visible-lg"></div>
+            </div>
+            <!-- /row -->
+          </div>
+          <!-- /STORE -->
+        </div>
+        <!-- /MAIN -->
+      </div>
+      <!-- /row -->
+    </form>
+  </div>
+  <!-- /container -->
+</div>
+<!-- /section -->
 
-							<div class="clearfix visible-sm visible-xs"></div>
-
-							<div class="clearfix visible-md visible-lg"></div>
-
-						</div>
-						<!-- /row -->
-					</div>
-					<!-- /STORE -->
-				</div>
-				<!-- /MAIN -->
-			</div>
-			<!-- /row -->
-		</form>
-		</div>
-		<!-- /container -->
-	</div>
-	<!-- /section -->
-
-	{% endblock content %}
-
-{% block extra_script %}
-<h1>jkhk</h1>
-$('.filter-option').click(function(){	
-		$('#filter-form').submit()		
-	})
-	$('select[name="sort_by"]').change(function(){
-		$('#filter-form').submit()		
-	})
-{% endblock extra_script %}
+{% endblock content %} {% block extra_script %}
+$('.filter-option').click(function(){ $('#filter-form').submit() })
+$('select[name="sort_by"]').change(function(){ $('#filter-form').submit() })
+{%endblock extra_script %}
